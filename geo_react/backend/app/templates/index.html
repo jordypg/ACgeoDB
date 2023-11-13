@@ -1,0 +1,51 @@
+<!-- app/templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Data</h1>
+    {% if students %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Email</th>
+                    <th>Major</th>
+                    <th>Primary Reason</th>
+                    <th>Language Proficiency</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.student_email }}</td>
+                        <td>{{ student.major }}</td>
+                        <td>{{ student.primary_reason }}</td>
+                        <td>{{ student.language_proficiency }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No student data available.</p>
+    {% endif %}
+</body>
+</html>
+
