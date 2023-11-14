@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import logo from './logo.svg';
 import './App.css';
@@ -101,6 +101,15 @@ function App() {
 
   function handleSearchButtonClick(){
     removePreviousResults();
+
+
+    fetch("/test_student")
+      .then(response => response.json())
+      .then(data => console.log(data))
+
+
+            
+
     render (<QueryResults entries = {test}/>)
   }
 
