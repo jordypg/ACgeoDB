@@ -1,4 +1,9 @@
 import pandas as pd
+from sqlalchemy import create_engine
+from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy.engine import URL
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base
 
 def extract_values(input_file):
     # Read the Excel file into a pandas DataFrame
@@ -20,6 +25,32 @@ def extract_values(input_file):
         objects_list.append(obj)
 
     return objects_list
+
+def insert_student_db():
+    url =  'postgresql://postgres:geodb@localhost/project'
+    engine = create_engine(url)
+    connection = engine.connect()
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    Base = declarative_base()
+
+    class Student(Base):
+        __tablename__ = 'student'
+        student_email = Column(String(255), primary_key=True, unique=True, nullable=False)
+        major = Column(String(100), nullable=False)
+        primary_reason = Column(String(255), nullable=False)
+        language_proficiency = Column(String(50), nullable=False)
+    
+    foo = Student(
+        student_email = 'foofoo',
+        major = 'foo',
+        primary_reason = 'foofoofoo',
+        language_proficiency = 'foofoofoofoo'
+    )
+    
+    session.add(foo)
+    session.commit()
 
 if __name__ == "__main__":
     # Use the relative path for the Excel file
@@ -58,6 +89,11 @@ if __name__ == "__main__":
         entry['program_name'] = obj[104]
         entry['term'] = obj[106]
         entries.append(entry)
+    
+    first_entry = extracted_objects[0]
+
+    insert_student_db()
+
     
     print(entries)
     #first_object = extracted_objects[0] if extracted_objects else None
