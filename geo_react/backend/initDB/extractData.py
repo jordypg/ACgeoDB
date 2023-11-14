@@ -28,9 +28,37 @@ if __name__ == "__main__":
     # Call the function and get the list of objects
     extracted_objects = extract_values(excel_file_path)
 
+    entries = []
     # Print the extracted objects
     for obj in extracted_objects:
-        print(f"Row {obj['row_number']}: {obj['values']}")
+        obj = obj['values']
+        entry = {}
+        entry['student_email'] = obj[0]
+        entry['courses_taken'] = obj[1:10]
+        entry['course_types'] = obj[10:28]
+        entry['primary_reason_for_abroad'] = obj[30]
+        entry['primary_language_spoken'] = obj[31:33]
+        entry['language_proficiency_before_after'] = obj[35]
+        entry['res_staff_availability'] = obj[36:38]
+        entry['housing_accomodation'] = obj[38:41]
+        entry['academic_excursion_availability'] = obj[41:45]
+        entry['leisure_excursion_availability'] = obj[45:49]
+        entry['amount_of_money_spent'] = obj[50]
+        entry['affordability'] = obj[51]
+        entry['extracurricular_participated'] = obj[52]
+        entry['reflection_on_goals'] = obj[55]
+        entry['personal_and_academic_growth'] = obj[75]
+        entry['challenges_of_experience'] = obj[76]
+        entry['new_persoectives_post_program'] = obj[77]
+        entry['factor_influencing_experience'] = obj[89:93]
+        entry['attitudes_different_from_us'] = obj[92:95]
+        entry['recommendation_rating'] = obj[95:97]
+        entry['country'] = obj[100]
+        entry['majors'] = obj[101:104]
+        entry['program_name'] = obj[104]
+        entry['term'] = obj[106]
+        entries.append(entry)
     
+    print(entries)
     #first_object = extracted_objects[0] if extracted_objects else None
-    #print(first_object['values'])
+    #print(first_object['values'][0])
