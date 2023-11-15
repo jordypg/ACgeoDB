@@ -17,15 +17,15 @@ function SearchField({number}){
   return (
     <>
       <select name={selectId} id={selectId}>
-        <option value="program_name">Program name</option>
-        <option value="country">Country</option>
-        <option value="influencing_factors">Deciding Factor for Program</option>
-        <option value="primary_language">Primary Language Spoken</option>
-        <option value="amount_spent">Estimated Cost Spent</option>
-        <option value="extracurriculars">Extracurricular Activities</option>
-        <option value="recommendation_rating">Recommendation Rating</option>
-        <option value="primary_reason">Primary Reason for Study Abroad</option>
-        <option value="major">Major</option>
+        <option value="0">Program name</option>
+        <option value="1">Country</option>
+        <option value="2">Deciding Factor for Program</option>
+        <option value="3">Primary Language Spoken</option>
+        <option value="4">Estimated Cost Spent</option>
+        <option value="5">Extracurricular Activities</option>
+        <option value="6">Recommendation Rating</option>
+        <option value="7">Primary Reason for Study Abroad</option>
+        <option value="8">Major</option>
       </select>
       <input id={textId} type="text"/> <br></br>
     </>
@@ -127,9 +127,27 @@ function App() {
                     rawResult[row]["amount_spent"], rawResult[row]["extracurriculars"],
                     rawResult[row]["recommendation_rating"], rawResult[row]["primary_reason"],
                     rawResult[row]["major"]])
-
     }
-    setResult(tempResults)
+    let toRemove = [];
+    for(var searchFieldIdx = 1; searchFieldIdx <= searchFields; searchFieldIdx++){
+      let filteredColumn = document.getElementById("fieldSelect" + searchFieldIdx).value;
+      let filterText = document.getElementById("fieldValue" + searchFieldIdx).value;
+      
+      for(var i = 0; i < tempResults.length; i++){
+        
+        if(!tempResults[i][filteredColumn].includes(filterText)){
+          console.log(tempResults[i][filteredColumn]+" doesn't include "+filterText);
+          toRemove.push(i);
+        }
+      }
+      console.log(toRemove);
+    }
+    
+
+    var tempResults2 = tempResults.filter((_, index) => toRemove.indexOf(index) == -1);
+    console.log(tempResults2)
+
+    setResult(tempResults2)
     //console.log(results)
 
 
