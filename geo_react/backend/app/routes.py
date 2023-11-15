@@ -39,20 +39,23 @@ def test_all():
 @app.route('/getStudents', methods=['GET'])
 def getStudents():
     students = (
-            db.session.query(Student.name)
+            db.session.query(Student.student_email)
             .join(Student_Program, Student.student_email == Student_Program.student_email)
-            .filter(Student_Program.program_name == 'DIS Copenhagen (Sustainability: Sustainable Development in Northern Europe)')
+            .filter(Student_Program.program_name == 'DIS Copenhagen')
             .all()
     )
-    return jsonify(students)
+    res = [student.student_email for student in students]
+    print(res)
+    return jsonify([{'student_email' : student.student_email} for student in students])
 
 @app.route('/getPrograms', methods=['GET'])
 def getPrograms():
     programs = (
             db.session.query(Program)
-            .join(Student_Program, Program.program_name == sp_alias.program_name)
-            .join(Student, Student.student_email == sp_alias.student_email)
-            .filter(Student.major == 'Computer Science')
+            .join(Student_Program, Program.program_name == Student_Program.program_name)
+            .join(Student, Student.student_email == Student_Program.student_email)
+            .filter(Student.major.ilike('%ECON%'))
             .all()
     )
-    return jsonify(programs)
+    print(programs)
+    return jsonify([{'program_name' : program.program_name} for program in programs])
