@@ -7,16 +7,12 @@ from app.models import Student
 @app.route('/getAllStudents')
 def index():
     students = Student.query.all()
-    return jsonify(students)
-
-@app.route('/test_student')
-def test_student():
-    students = Student.query.all()
     res = [{'student_email':student.student_email,
             'major':student.major,
             'primary_reason':student.primary_reason,
             'language_proficiency':student.language_proficiency} for student in students]
     return jsonify(res)
+
 
 @app.route('/test_all')
 def test_all():
