@@ -17,15 +17,15 @@ function SearchField({number}){
   return (
     <>
       <select name={selectId} id={selectId}>
-        <option value="progName">Program name</option>
-        <option value="progCountry">Country</option>
-        <option value="decFact">Deciding Factor for Program</option>
-        <option value="primLang">Primary Language Spoken</option>
-        <option value="estCost">Estimated Cost Spent</option>
-        <option value="primLang">Extracurricular Activities</option>
-        <option value="primLang">Recommendation Rating</option>
-        <option value="primReas">Primary Reason for Study Abroad</option>
-        <option value="partMajor">Major</option>
+        <option value="program_name">Program name</option>
+        <option value="country">Country</option>
+        <option value="influencing_factors">Deciding Factor for Program</option>
+        <option value="primary_language">Primary Language Spoken</option>
+        <option value="amount_spent">Estimated Cost Spent</option>
+        <option value="extracurriculars">Extracurricular Activities</option>
+        <option value="recommendation_rating">Recommendation Rating</option>
+        <option value="primary_reason">Primary Reason for Study Abroad</option>
+        <option value="major">Major</option>
       </select>
       <input id={textId} type="text"/> <br></br>
     </>
@@ -34,7 +34,7 @@ function SearchField({number}){
 
 function AddFieldsButton({handleClick}) {
   
-  removePreviousResults();
+  //removePreviousResults();
   return (
     <button onClick={handleClick}>
       Add field
@@ -91,26 +91,51 @@ function QueryResults({entries}){
 }
 
 function App() {
-
-  const [searchFields, setSearchFields] = useState(1)
+  
+  const [searchFields, setSearchFields] = useState(1);
+  const [rawResult, setRawResult] = useState([]);
+  const [result, setResult] = useState([]);
   let test = [["AAA", "BBB", "CCC"], ["DDD", "EEE", "FFF"], ["GGG", "HHH", "III"]]
+
   function handleAddFieldsButtonClick() {
     setSearchFields(searchFields + 1)
     render(<SearchField number={searchFields}/>);
   }
 
   function handleSearchButtonClick(){
+    //let orderedKeys = ['program_name', 'country', 'influencing_factors', 'primary_language', 'amount_spent', 'extracurriculars', 'recommendation_rating', 'primary_reason', 'major']
     removePreviousResults();
 
-
-    fetch("/test_student")
+   
+    fetch("/test_all")
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => setRawResult(data));
+    console.log(rawResult);
+    
+    //console.log(rawResult[0]["program_name"]);
+    
+    var tempResults = [];
+    //results.push(rawResult[0]["pro"])
+    for(var row = 0; row < rawResult.length; row++){
+      /*let currRow = [];
+      for(var column = 0; column < rawResult[row].size; column++){
+        //console.log(rawResult[row][orderedKeys[column]]);
+        currRow.push(rawResult[row][orderedKeys[column]]);
+      }*/
+      tempResults.push([rawResult[row]["program_name"], rawResult[row]["country"], 
+                    rawResult[row]["influencing_factors"], rawResult[row]["primary_language"],
+                    rawResult[row]["amount_spent"], rawResult[row]["extracurriculars"],
+                    rawResult[row]["recommendation_rating"], rawResult[row]["primary_reason"],
+                    rawResult[row]["major"]])
+
+    }
+    setResult(tempResults)
+    //console.log(results)
 
 
             
 
-    render (<QueryResults entries = {test}/>)
+    render (<QueryResults entries = {result}/>)
   }
 
   return (
