@@ -135,7 +135,7 @@ function App() {
       
       for(var i = 0; i < tempResults.length; i++){
         
-        if(!tempResults[i][filteredColumn].includes(filterText)){
+        if(!tempResults[i][filteredColumn].toLowerCase().includes(filterText.toLowerCase())){
           console.log(tempResults[i][filteredColumn]+" doesn't include "+filterText);
           toRemove.push(i);
         }
