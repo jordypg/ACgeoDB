@@ -1,8 +1,8 @@
 # app/routes.py
 
 from flask import render_template, jsonify
-from app import app
-from app.models import Student
+from app import app, db
+from app.models import Student, Student_Program, Program
 
 @app.route('/getAllStudents')
 def index():
