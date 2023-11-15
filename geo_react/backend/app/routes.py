@@ -39,3 +39,13 @@ def test_all():
             'primary_reason':'Reason 2',
             'major':'Major 2'}]
     return jsonify(res)
+
+@app.route('/getStudents', methods=['GET'])
+def getStudents():
+    students = (
+            db.session.query(Student.name)
+            .join(Student_Program, Student.student_email == Student_Program.student_email)
+            .filter(Student_Program.program_name == 'DIS Copenhagen (Sustainability: Sustainable Development in Northern Europe)')
+            .all()
+    )
+    
