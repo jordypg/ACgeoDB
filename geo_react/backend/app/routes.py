@@ -4,10 +4,10 @@ from flask import render_template, jsonify
 from app import app
 from app.models import Student
 
-@app.route('/')
+@app.route('/getAllStudents')
 def index():
     students = Student.query.all()
-    return render_template('index.html', students=students)
+    return jsonify(students)
 
 @app.route('/test_student')
 def test_student():
@@ -49,3 +49,14 @@ def getStudents():
             .all()
     )
     return jsonify(students)
+
+@app.route('/getPrograms', methods=['GET'])
+def getPrograms():
+    programs = (
+            db.session.query(Program)
+            .join(Student_Program, Program.program_name == sp_alias.program_name)
+            .join(Student, Student.student_email == sp_alias.student_email)
+            .filter(Student.major == 'Computer Science')
+            .all()
+    )
+    return jsonify(programs)
