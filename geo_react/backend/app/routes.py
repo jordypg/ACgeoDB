@@ -48,4 +48,4 @@ def getStudents():
             .filter(Student_Program.program_name == 'DIS Copenhagen (Sustainability: Sustainable Development in Northern Europe)')
             .all()
     )
-    
+    return jsonify(students)
