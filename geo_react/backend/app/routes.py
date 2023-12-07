@@ -6,7 +6,7 @@ from app.models import Student, Student_Program, Program
 
 @app.route('/getAllStudents')
 def index():
-    students = Student.query.all()
+    students = db.session.query(Student).all()
     res = [{'student_email':student.student_email,
             'major':student.major,
             'primary_reason':student.primary_reason,
