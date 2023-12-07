@@ -10,19 +10,25 @@ db = declarative_base()
 class Student(db):
         __tablename__ = 'student'
         student_email = Column(String(255), primary_key=True, nullable=False)
-        major = Column(String(255))
         primary_reason = Column(String(500))
         language_proficiency = Column(String(50))
 
-# class Location(db.Model):
-# 	__tablename__ = 'location'
-# 	location_name = db.Column(db.String(255), primary_key=True, nullable=False)
-# 	primary_language = db.Column(db.String(255))
-# 	country = db.Column(db.String(255))
+class Major(db):
+	__tablename__ = 'major'
+	student_email = Column(String(255), nullable=False)
+	major_name = Column(String(50))
 
 class Program(db):
 	__tablename__ = 'program'
 	program_name = Column(String(255), primary_key=True, nullable=False)
+
+class Personal_Reflection(db):
+	__tablename__ = 'personal_reflection"
+	student_email = Column(String(255), nullable=False)
+	program_name = Column(String(255))
+	term = Column(String(255))
+	pr_id = Column(String(50))
+
 
 class Student_Program(db):
 	__tablename__ = 'student_program'
