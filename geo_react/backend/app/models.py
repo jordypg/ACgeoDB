@@ -15,7 +15,7 @@ class Student(db):
 
 class Major(db):
 	__tablename__ = 'major'
-	student_email = Column(String(255), nullable=False)
+	student_email = Column(String(255), primary_key=True, nullable=False)
 	major_name = Column(String(50))
 
 class Program(db):
@@ -23,8 +23,8 @@ class Program(db):
 	program_name = Column(String(255), primary_key=True, nullable=False)
 
 class Personal_Reflection(db):
-	__tablename__ = 'personal_reflection"
-	student_email = Column(String(255), nullable=False)
+	__tablename__ = 'personal_reflection'
+	student_email = Column(String(255), primary_key=True, nullable=False)
 	program_name = Column(String(255))
 	term = Column(String(255))
 	pr_id = Column(String(50))
