@@ -187,7 +187,7 @@ def insert_program_reflection(entry_dict, session):
     session.commit()
 
 def insert_is_about_academic_factors(entry_dict, session):
-    foo = Has_Academic_Factors (
+    foo = Is_About_Academic_Factors (
         pgr_id = program_ids[entry_dict['program_name']],
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
@@ -203,7 +203,7 @@ def insert_is_about_academic_factors(entry_dict, session):
     session.commit()
 
 def insert_is_about_financial_factors(entry_dict, session):
-    foo = Has_Financial_Factors (
+    foo = Is_About_Financial_Factors (
         pgr_id = program_ids[entry_dict['program_name']],
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
@@ -217,7 +217,7 @@ def insert_is_about_financial_factors(entry_dict, session):
     session.commit()
 
 def insert_is_about_social_factors(entry_dict, session):
-    foo = Has_Social_Factors (
+    foo = Is_About_Social_Factors (
         pgr_id = program_ids[entry_dict['program_name']],
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
