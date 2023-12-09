@@ -7,6 +7,7 @@ interface CardProps {
   program: string;
   major: string;
   country: string;
+  imageUrl: string;
 }
 
 const CardContainer = styled.div`
@@ -21,6 +22,26 @@ const CardContainer = styled.div`
   &:hover {
     transform: scale(1.05);
   }
+  display: flex;
+`;
+
+const CardContentContainer = styled.div`
+  flex: 1;
+`;
+
+const ImageContainer = styled.div`
+  width: 180px; /* Adjust the width of the image container */
+  height: 150px; /* Adjust the height of the image container */
+  margin-left: 10 px; /* Adjust the margin as needed */
+  overflow: hidden;
+  margin-top: 13px;
+  border-radius: 8px; /* Optional: Add border-radius for a rounded image container */
+`;
+
+const CardImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container */
 `;
 
 const CardTitle = styled.h3`
@@ -35,13 +56,18 @@ const CardContent = styled.p`
   margin-bottom: 20px; /* Adjust the margin as needed */
 `;
 
-const Card: React.FC<CardProps> = ({name, program, major, country}) => {
+const Card: React.FC<CardProps> = ({name, program, major, country, imageUrl }) => {
     return (
       <CardContainer>
-        <CardTitle>{name}</CardTitle>
-        <CardContent>{program}</CardContent>
-        <CardContent>{major}</CardContent>
-        <CardContent>{country}</CardContent>
+        <CardContentContainer>
+          <CardTitle>{name}</CardTitle>
+          <CardContent>{program}</CardContent>
+          <CardContent>{major}</CardContent>
+          <CardContent>{country}</CardContent>
+        </CardContentContainer>
+        <ImageContainer>
+          <CardImage src={imageUrl} alt={`${name}'s image`} />
+        </ImageContainer>
       </CardContainer>
     );
   };
