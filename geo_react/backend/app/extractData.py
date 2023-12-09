@@ -128,7 +128,7 @@ def insert_program(entry_dict, session):
     #If we haven't encountered this program yet...
     if program not in program_ids:
         #...assign a program ID to it...
-        program_ids[program] = next_program_id
+        program_ids[program] = str(next_program_id)
         next_program_id += 1
         #...and add it to the DB.
         foo = Program (
@@ -162,7 +162,7 @@ def insert_personal_reflection(entry_dict, session):
         student_email = entry_dict['student_email'],
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
-        pr_id = next_pr_id,
+        pr_id = str(next_pr_id),
         goals_reflection = entry['goals_reflection'],
         growth = entry['growth'],
         challenges = entry['challenges'],
