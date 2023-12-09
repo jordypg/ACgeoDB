@@ -5,6 +5,7 @@ import './App.css';
 import { render } from '@testing-library/react';
 
 function removePreviousResults(){
+  //frontend branch
   let previousResults = document.getElementById("search_results");
   if(previousResults != null){
     previousResults.remove();
