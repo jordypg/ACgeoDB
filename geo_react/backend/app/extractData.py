@@ -84,6 +84,7 @@ def insert_db(entry_dict):
     insert_is_about_social_factors(entry_dict, session)
     insert_location(entry_dict, session)
     insert_hosted_in(entry_dict, session)
+    session.commit()
     session.close()
 
 def insert_student(entry_dict, session):
@@ -93,7 +94,7 @@ def insert_student(entry_dict, session):
     )
 
     session.add(foo)
-    session.commit()  
+      
 
 
 
@@ -102,11 +103,12 @@ def insert_major(entry_dict, session):
     entry_majors = entry_dict['majors']
     for major in entry_majors.split(val_separator):
         if major not in majors:
+            majors.add(major)
             foo = Major(
                 major_name = major
             )
             session.add(foo)
-            session.commit()
+            
 
 
 def insert_has_major(entry_dict, session):
@@ -117,33 +119,32 @@ def insert_has_major(entry_dict, session):
             major_name = major
         )
         session.add(foo)
-        session.commit()
+        
 
-program_ids = dict() #Dictionary mapping every program name to their program IDs
-next_program_id = 0
+added_programs = set()
+
 def insert_program(entry_dict, session):
-    
     program = entry_dict['program_name']
 
     #If we haven't encountered this program yet...
-    if program not in program_ids:
-        #...assign a program ID to it...
-        program_ids[program] = str(next_program_id)
-        next_program_id += 1
+    if program not in added_programs:
+
+        added_programs.add(program)
         #...and add it to the DB.
         foo = Program (
             program_name = program
         )
         session.add(foo)
-        session.commit()
+        
 
 terms = set()
 def insert_term(entry_dict, session):
     term = entry_dict['term']
     if term not in terms:
+        terms.add(term)
         foo = Term(term_id = term)
-    session.add(foo)
-    session.commit()
+        session.add(foo)
+    
 
 
 def insert_participates_in(entry_dict, session):
@@ -152,17 +153,21 @@ def insert_participates_in(entry_dict, session):
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term']
     )
-
     session.add(foo)
-    session.commit()
+    
 
 next_pr_id = 0
 def insert_personal_reflection(entry_dict, session):
+    try:
+        insert_personal_reflection.next_pr_id += 1
+    except AttributeError:
+        insert_personal_reflection.next_pr_id = 0
+
     foo = Personal_Reflection(
         student_email = entry_dict['student_email'],
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
-        pr_id = str(next_pr_id),
+        pr_id = str(insert_personal_reflection.next_pr_id),
         goals_reflection = entry['goals_reflection'],
         growth = entry['growth'],
         challenges = entry['challenges'],
@@ -170,41 +175,48 @@ def insert_personal_reflection(entry_dict, session):
         language_proficiency_before = entry['language_proficiency_before'],
         language_proficiency_after = entry['language_proficiency_after'],
     )
-    next_pr_id += 1
+
     session.add(foo)
-    session.commit()
+    
 
 def insert_program_reflection(entry_dict, session):
+
+    #Set program reflection id
+    try:
+        insert_program_reflection.curr_id += 1
+    except AttributeError:
+        insert_program_reflection.curr_id = 0
+
     foo = Program_Reflection (
         student_email = entry_dict['student_email'],
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
-        pgr_id = program_ids[entry_dict['program_name']],
+        pgr_id = insert_program_reflection.curr_id,
         recommendation_rating = entry['recommendation_rating'],
         recommendation_comments = entry['recommendation_comments']
     )
     session.add(foo)
-    session.commit()
+    
 
 def insert_is_about_academic_factors(entry_dict, session):
     foo = Is_About_Academic_Factors (
-        pgr_id = program_ids[entry_dict['program_name']],
+        pgr_id = insert_program_reflection.curr_id,
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
         courses_taken = entry_dict['courses_taken'],
         courses_type = entry_dict['courses_type'],
-        academic_exc_avail = entry_dict['academic_excursion_avail'],
+        academic_exc_avail = entry_dict['academic_exc_avail'],
         academic_exc_rating = entry_dict['academic_exc_rating'],
         academic_exc_comments = entry_dict['academic_exc_comments'],
         influencing_factors = entry_dict['influencing_factors'],
         orientation_description = entry_dict['orientation_description']
         )
     session.add(foo)
-    session.commit()
+    
 
 def insert_is_about_financial_factors(entry_dict, session):
     foo = Is_About_Financial_Factors (
-        pgr_id = program_ids[entry_dict['program_name']],
+        pgr_id = insert_program_reflection.curr_id,
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
         amount_spent = entry_dict['amount_spent'],
@@ -214,14 +226,14 @@ def insert_is_about_financial_factors(entry_dict, session):
 
         )
     session.add(foo)
-    session.commit()
+    
 
 def insert_is_about_social_factors(entry_dict, session):
     foo = Is_About_Social_Factors (
-        pgr_id = program_ids[entry_dict['program_name']],
+        pgr_id = insert_program_reflection.curr_id,
         program_name = entry_dict['program_name'],
         term_id = entry_dict['term'],
-        extracurricals = entry_dict['extracurriculars'],
+        extracurriculars = entry_dict['extracurriculars'],
         attitudes_diff = entry_dict['attitudes_diff'],
         attitudes_diff_comments = entry_dict['attitudes_diff_comments'],
         res_staff = entry_dict['res_staff'],
@@ -231,32 +243,40 @@ def insert_is_about_social_factors(entry_dict, session):
         leisure_exc_comments = entry_dict['leisure_exc_comments']
         )
     session.add(foo)
-    session.commit()
+    
 
 #A mapping of program names to their locations
 location_names = {'IES Abroad Milan': 'Milan',
                   'IES Abroad Rome': 'Rome',
                   'Maastricht University': 'Maastricht',
                   'DIS Copenhagen': 'Copenhagen',
-                  'University of Oxford, Lady Margaret Hall': 'Oxford',
+                  'University of Oxford': 'Oxford',
                   'Columbia Visiting Students Program': 'New York, NY'}
 
+added_locations = set()
 def insert_location(entry_dict, session):
-    foo = Location (
-        location_name = location_names[entry_dict['program_name']],
-        primary_lang_spoken = entry_dict['primary_lang_spoken'],
-        country = entry_dict['country']
-        )
-    session.add(foo)
-    session.commit()
-
+    location = location_names[entry_dict['program_name']]
+    if location not in added_locations:
+        added_locations.add(location)
+        foo = Location (
+            location_name = location,
+            primary_lang_spoken = entry_dict['primary_lang_spoken'],
+            country = entry_dict['country']
+            )
+        session.add(foo)
+    
+added_hosted_in = set()
 def insert_hosted_in(entry_dict, session):
-    foo = Hosted_In (
-        program_name = entry_dict['program_name'],
-        location_name = location_names[entry_dict['program_name']]
-        )
-    session.add(foo)
-    session.commit()    
+    prog_name = entry_dict['program_name']
+    loc_name = location_names[entry_dict['program_name']]
+    if (prog_name, loc_name) not in added_hosted_in:
+        added_hosted_in.add((prog_name, loc_name))
+        foo = Hosted_In (
+            program_name = prog_name,
+            location_name = loc_name
+            )
+        session.add(foo)
+        
   
 
 if __name__ == "__main__":
@@ -319,7 +339,9 @@ if __name__ == "__main__":
                 val = remove_empty_cells(val)
                 val = val_separator.join(val)
             entry[key] = val
+        entries.append(entry)
     
-    for entry in (entries):
+    for entry in entries:
+        print(f"[DEBUG] Inserting entry for {entry['student_email']}...")
         insert_db(entry)
     
