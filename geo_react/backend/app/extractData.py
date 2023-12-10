@@ -37,7 +37,7 @@ def handle_other_selection(primary, other):
     
     '''The selection for specifying an other answer is not uniform over the questions; 
        it's either "Other" or "Other (Please specify)". So we have to use str.startswith()'''
-    if primary.strip().startswith("Other") \
+    if (isEmptyCell(primary) or primary.strip().startswith("Other")) \
        and not isEmptyCell(other):
         return other
     else: 
