@@ -14,7 +14,7 @@ class Student(db):
 
 class Major(db):
 	__tablename__ = 'major'
-	major_name = Column(String(255), nullable=False)
+	major_name = Column(String(255), nullable=False, primary_key=True)
 
 class Has_Major(db):
 	__tablename__ = 'has_major'
