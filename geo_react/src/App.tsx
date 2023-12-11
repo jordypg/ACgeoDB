@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Header from './components/Header';
 import FilterSection from './components/FilterSection';
 import CardList from './components/CardList';
+import { FilterProvider } from './components/FilterContext';
 
 const AppContainer = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const ContentContainer = styled.div`
 const App: React.FC = () => {
 
   return (
+    <FilterProvider>
     <AppContainer>
       <Header />
       <ContentContainer>
@@ -26,6 +28,7 @@ const App: React.FC = () => {
         <CardList/>
       </ContentContainer>
     </AppContainer>
+    </FilterProvider>
   );
 };
 
