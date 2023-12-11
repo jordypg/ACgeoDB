@@ -83,9 +83,7 @@ def get_all_cards():
             'student_email': row.student_email,
             'program': row.program,
             'country': row.country,
-            'major_1': row.major_1,
-            'major_2': row.major_2,
-            'major_3': row.major_3,
+            'majors': [row.major_1, row.major_2, row.major_3],
             'random_name': generate_random_name()  # Add a random name field
         }
         for row in result
