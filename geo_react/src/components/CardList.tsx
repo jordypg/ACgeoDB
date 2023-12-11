@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
 import { useFilterContext } from './FilterContext';
-import unkownUser from '/home/hwarrich23/ACgeoDB/geo_react/src/Images/unkown_user.jpg';
+import unkownUser from '/home/jyoon23/ACgeoDB/geo_react/src/Images/unkown_user.jpg';
 
+interface OriginalData {
+  country: string;
+  majors: string[];
+  pgr_id: string;
+  program: string;
+  random_name: string;
+  student_email: string;
+}
+
+interface TransformedData {
+  name: string;
+  program: string;
+  major: string;
+  country: string;
+  imageUrl: string;
+}
 
 const CardListContainer = styled.div`
 flex: 3;
@@ -14,49 +30,41 @@ max-height: 800px; /* Set the maximum height as needed */
 overflow-y: auto; /* Add vertical scrollbar if content overflows */
 `;
 
-const cardsData = [
-  { name: 'Student 1', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser },
-  { name: 'Student 2', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 3', program: 'Program', major: 'Chem', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 4', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 5', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 6', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 7', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 8', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 9', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 10', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 11', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 12', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 13', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 14', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 15', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 16', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 17', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 18', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  // Add more card data as needed
-];
-
 
 const CardList: React.FC = () => {
+  const [cardsData, setCardsData] = useState<TransformedData[]>([]);
   // Assuming your Flask server is running on http://localhost:5000
 const apiUrl = 'http://localhost:5000/get_all_cards';
 
 // Function to fetch data from the Flask API
-const fetchData = async () => {
-  try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data: OriginalData[] = await response.json();
+
+      const transformedData: TransformedData[] = data.map(item => {
+        const joinedMajors = item.majors.filter(major => major !== '').join(', ');
+        return {
+          name: item.random_name,
+          program: item.program,
+          major: joinedMajors,
+          country: item.country,
+          imageUrl: unkownUser // Replace with actual image URL if available
+        };
+      });
+
+      setCardsData(transformedData);
+    } catch (error: any) {
+      console.error('Error fetching data:', error.message);
     }
-
-    const data = await response.json();
-    console.log('Data from Flask API:', data);
-  } catch (error: any) {
-    console.error('Error fetching data:', error.message);
-  }
-};
-
-fetchData()
+  };
+  fetchData();
+}, []);
 
   const { filterValue } = useFilterContext();
   const filteredCards = cardsData.filter((card) =>
