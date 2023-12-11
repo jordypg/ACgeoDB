@@ -1,141 +1,84 @@
 # app/models.py
 
-#from app import db
+# from app import db
 # from sqlalchemy.engine import URL
-from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey
-from sqlalchemy.orm import declarative_base, relationship
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy.orm import declarative_base
 
-db = SQLAlchemy()
+db = declarative_base()
 
-class Student(db.Model):
+class Student(db):
         __tablename__ = 'student'
-        student_email = Column(String(255), nullable=False, primary_key=True)
-        primary_reason = Column(Text())
+        student_email = Column(String(255), primary_key=True, nullable=False)
+        primary_reason = Column(String(500))
+        language_proficiency = Column(String(50))
 
-class Major(db.Model):
+class Major(db):
 	__tablename__ = 'major'
-	major_name = Column(String(255), nullable=False, primary_key=True)
+	student_email = Column(String(255), primary_key=True, nullable=False)
+	major_name = Column(String(50))
 
-class Has_Major(db.Model):
-	__tablename__ = 'has_major'
-	student_email = Column(String(255), ForeignKey('student.student_email'), nullable=False, primary_key=True)
-	major_name = Column(String(255), ForeignKey('major.major_name'), nullable=True, primary_key=True)
-
-	student = relationship('Student')
-	major = relationship('Major')
-#question for Prof. Riondato: include a backref here?
-
-class Program(db.Model):
+class Program(db):
 	__tablename__ = 'program'
-	program_name = Column(String(255), nullable=False, primary_key=True)
+	program_name = Column(String(255), primary_key=True, nullable=False)
 
-class Term(db.Model):
-	__tablename__ = 'term'
-	term_id = Column(String(255), nullable=False, primary_key=True)
-
-class Participates_In(db.Model):
-	__tablename__ = 'participates_in'
-	student_email = Column(String(255), ForeignKey('student.student_email'), nullable=False, primary_key=True)
-	program_name = Column(String(255), ForeignKey('program.program_name'), nullable=False, primary_key=True)
-	term_id = Column(String(255), ForeignKey('term.term_id'), nullable=False, primary_key=True)
-
-	student = relationship('Student')
-	program = relationship('Program')
-	term = relationship('Term')
-
-
-class Personal_Reflection(db.Model):
+class Personal_Reflection(db):
 	__tablename__ = 'personal_reflection'
-	student_email = Column(String(255), ForeignKey('student.student_email'), nullable=False, primary_key=True)
-	program_name = Column(String(255), ForeignKey('program.program_name'), nullable=False, primary_key=True)
-	term_id = Column(String(255), ForeignKey('term.term_id'), nullable=False, primary_key=True)
-	pr_id = Column(String(255), nullable=False, primary_key=True)
-	goals_reflection = Column(Text())
-	growth = Column(Text())
-	challenges = Column(Text())
-	new_perspectives = Column(Text())
-	language_proficiency_before = Column(Text())
-	language_proficiency_after = Column(Text())
-
-	student = relationship('Student')
-	program = relationship('Program')
-	term = relationship('Term')
+	student_email = Column(String(255), primary_key=True, nullable=False)
+	program_name = Column(String(255))
+	term = Column(String(255))
+	pr_id = Column(String(50))
 
 
-class Program_Reflection(db.Model):
-	__tablename__ = 'program_reflection'
-	student_email = Column(String(255), ForeignKey('student.student_email'), nullable=False, primary_key=True)
-	program_name = Column(String(255), ForeignKey('program.program_name'), nullable=False, primary_key=True)
-	term_id = Column(String(255), ForeignKey('term.term_id'), nullable=False, primary_key=True)
-	pgr_id = Column(String(255), unique=True, primary_key=True)
-	recommendation_rating = Column(Text())
-	recommendation_comments = Column(Text())
+class Student_Program(db):
+	__tablename__ = 'student_program'
+	# id = Column(Integer, primary_key=True, nullable=False)
+	student_email = Column(String(255), primary_key=True, nullable = False)
+	program_name = Column(String(255), primary_key = True, nullable = False)
+	term = Column(String(255))
 
-	student = relationship('Student')
-	program = relationship('Program')
-	term = relationship('Term')
+# class Program_Location(db.Model):
+# 	__tablename__ = 'program_location'
+# 	program_name = db.Column(db.String(255), primary_key=True, nullable=False)
+# 	location_name = db.Column(db.String(255))
 
-class Is_About_Academic_Factors(db.Model):
-	__tablename__ = 'is_about_academic_factors'
-	pgr_id = Column(db.String(255), ForeignKey('program_reflection.pgr_id'), nullable=False, primary_key=True)
-	program_name = Column(db.String(255), ForeignKey('program.program_name'), nullable=False)
-	term_id = Column(db.String(255), ForeignKey('term.term_id'), nullable=False)
-	courses_taken = Column(Text())
-	courses_type = Column(Text())
-	academic_exc_avail = Column(Text())
-	academic_exc_rating = Column(Text())
-	academic_exc_comments = Column(Text())
-	influencing_factors = Column(Text())
-	orientation_description = Column(Text())
+# class Participates_In(db.Model):
+# 	__tablename__ = 'participates_in'
+# 	id = db.Column(db.Integer, primary_key=True, nullable=False)
+# 	student_email = db.Column(db.String(255))
+# 	program_name = db.Column(db.String(255))
+# 	term = db.Column(db.String(255))
+# 	language_proficiency_after = db.Column(db.String(255))
+# 	amount_spent = db.Column(db.Integer)
+# 	city_affordability = db.Column(db.Text)
+# 	extracurriculars = db.Column(db.Text)
+# 	courses_taken = db.Column(db.Text)
+# 	courses_type = db.Column(db.String(255))
+# 	influencing_factors = db.Column(db.String(255))
+# 	attitudes_diff = db.Column(db.Boolean)
+# 	attitudes_diff_comments = db.Column(db.Text)
+# 	orientation_description = db.Column(db.Text)
+# 	res_staff_avail = db.Column(db.Boolean)
+# 	res_staff_comment = db.Column(db.Text)
+# 	housing_acc = db.Column(db.Boolean)
+# 	housing_acc_comment = db.Column(db.Text)
+# 	academic_exc_avail = db.Column(db.Boolean)
+# 	academic_exc_rating = db.Column(db.String(255))
+# 	academic_exc_comments = db.Column(db.Text)
+# 	leisure_exc_avail = db.Column(db.Boolean)
+# 	leisure_exc_rating = db.Column(db.String(255))
+# 	leisure_exc_comments = db.Column(db.Text)
 
-	program_reflection = relationship('Program_Reflection')
-	program = relationship('Program')
-	term = relationship('Term')
-
-
-class Is_About_Financial_Factors(db.Model):
-	__tablename__ = 'is_about_financial_factors'
-	pgr_id = Column(db.String(255), ForeignKey('program_reflection.pgr_id'), nullable=False, primary_key=True)
-	program_name = Column(db.String(255), ForeignKey('program.program_name'), nullable=False)
-	term_id = Column(db.String(255), ForeignKey('term.term_id'), nullable=False)
-	amount_spent = Column(db.String(255))
-	city_affordability = Column(Text())
-	housing_acc = Column(Text())
-	housing_acc_comments = Column(Text())
-
-	program_reflection = relationship('Program_Reflection')
-	program = relationship('Program')
-	term = relationship('Term')
-
-class Is_About_Social_Factors(db.Model):
-	__tablename__ = 'is_about_social_factors'
-	pgr_id = Column(db.String(255), ForeignKey('program_reflection.pgr_id'), nullable=False, primary_key=True)
-	program_name = Column(db.String(255), ForeignKey('program.program_name'), nullable=False)
-	term_id = Column(db.String(255), ForeignKey('term.term_id'), nullable=False)
-	extracurriculars = Column(Text())
-	attitudes_diff = Column(Text())
-	attitudes_diff_comments = Column(Text())
-	res_staff = Column(Text())
-	res_staff_comments = Column(Text())
-	leisure_exc_avail = Column(Text())
-	leisure_exc_rating = Column(Text())
-	leisure_exc_comments = Column(Text())
-
-	program_reflection = relationship('Program_Reflection')
-	program = relationship('Program')
-	term = relationship('Term')
-
-class Location(db.Model):
-	__tablename__ = 'location'
-	location_name = Column(db.String(255), nullable=False, primary_key=True)
-	primary_lang_spoken = Column(db.String(255))
-	country = Column(db.String(255))
-
-class Hosted_In(db.Model):
-	__tablename__ = 'hosted_in'
-	program_name = Column(db.String(255), ForeignKey('program.program_name'), nullable=False, primary_key=True)
-	location_name = Column(db.String(255), ForeignKey('location.location_name'), nullable=False)
-
-	program = relationship('Program')
-	location = relationship('Location')
+# class Is_About(db.Model):
+# 	__tablename__ = 'is_about'
+# 	id = db.Column(db.Integer, primary_key=True, nullable=False)
+# 	pr_id = db.Column(db.Integer)
+# 	student_name = db.Column(db.String(255))
+# 	program_name = db.Column(db.String(255))
+# 	goals_reflections = db.Column(db.Text)
+# 	term = db.Column(db.String(255))
+# 	growth = db.Column(db.Text)
+# 	challenges = db.Column(db.Text)
+# 	new_perspectives = db.Column(db.Text)
+# 	recomendation_rating = db.Column(db.Integer)
+# 	recommendation_comments = db.Column(db.Text)
