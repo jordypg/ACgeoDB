@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface CardProps {
@@ -8,9 +7,10 @@ interface CardProps {
   major: string;
   country: string;
   imageUrl: string;
+  onCardClick: () => void;
 }
 
-const CardContainer = styled.div<{ isExpanded: boolean }>`
+const CardContainer = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
@@ -18,12 +18,12 @@ const CardContainer = styled.div<{ isExpanded: boolean }>`
   width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
-  width: ${(props) => (props.isExpanded ? '50%' : '300px')};
-  height: ${(props) => (props.isExpanded ? '50vh' : 'auto')};
+  width: '300px';
+  height: '200px'
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
   &:hover {
-    transform: ${(props) => (props.isExpanded ? 'none' : 'scale(1.05)')};
+    transform: scale(1.05);
   }
   display: flex;
 `;
@@ -32,7 +32,7 @@ const CardContentContainer = styled.div`
   flex: 1;
 `;
 
-const ImageContainer = styled.div<{ isExpanded: boolean }>`
+const ImageContainer = styled.div`
   width: 180px; /* Adjust the width of the image container */
   height: 150px; /* Adjust the height of the image container */
   margin-left: 10 px; /* Adjust the margin as needed */
@@ -59,21 +59,16 @@ const CardContent = styled.p`
   margin-bottom: 20px; /* Adjust the margin as needed */
 `;
 
-const Card: React.FC<CardProps> = ({name, program, major, country, imageUrl }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const handleCardClick = () => {
-    setIsExpanded(!isExpanded);
-  };
+const Card: React.FC<CardProps> = ({name, program, major, country, imageUrl,  onCardClick }) => {
     return (
-      <CardContainer isExpanded={isExpanded} onClick={handleCardClick}>
+      <CardContainer onClick={onCardClick}>
         <CardContentContainer>
           <CardTitle>{name}</CardTitle>
           <CardContent>{program}</CardContent>
           <CardContent>{major}</CardContent>
           <CardContent>{country}</CardContent>
         </CardContentContainer>
-        <ImageContainer isExpanded={isExpanded}>
+        <ImageContainer>
           <CardImage src={imageUrl} alt={`${name}'s image`} />
         </ImageContainer>
       </CardContainer>
