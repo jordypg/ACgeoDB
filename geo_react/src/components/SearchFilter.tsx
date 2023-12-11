@@ -1,10 +1,6 @@
 // SearchFilter.tsx
-import React, { useState } from 'react';
 import styled from 'styled-components';
-
-interface SearchFilterProps {
-  onSearch: (query: string) => void;
-}
+import { useFilterContext } from './FilterContext';
 
 const SearchFilterContainer = styled.div`
   margin-bottom: 20px;
@@ -16,12 +12,11 @@ const SearchInput = styled.input`
   box-sizing: border-box;
 `;
 
-const SearchFilter: React.FC<SearchFilterProps> = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+const SearchFilter: React.FC = () => {
+  const { filterValue, setFilterValue } = useFilterContext();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-    onSearch(searchQuery);
+    setFilterValue(event.target.value);
   };
 
 
@@ -30,8 +25,9 @@ const SearchFilter: React.FC<SearchFilterProps> = ({ onSearch }) => {
       <SearchInput
         type="text"
         placeholder="Search by name, program, or major"
-        value={searchQuery}
+        value={filterValue}
         onChange={handleSearchChange}
+
       />
     </SearchFilterContainer>
   );

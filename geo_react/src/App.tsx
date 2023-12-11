@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import Header from './components/Header';
 import FilterSection from './components/FilterSection';
@@ -18,12 +17,13 @@ const ContentContainer = styled.div`
 `;
 
 const App: React.FC = () => {
+
   return (
     <AppContainer>
       <Header />
       <ContentContainer>
-        <FilterSection />
-        <CardList />
+        <FilterSection/>
+        <CardList/>
       </ContentContainer>
     </AppContainer>
   );

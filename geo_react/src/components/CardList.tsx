@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Card from './Card';
+import { useFilterContext } from './FilterContext';
 import unkownUser from '/home/hwarrich23/ACgeoDB/geo_react/src/Images/unkown_user.jpg';
 
 
@@ -24,7 +25,14 @@ const cardsData = [
   // Add more card data as needed
 ];
 
+
 const CardList: React.FC = () => {
+  const { filterValue } = useFilterContext();
+
+  const filteredCards = cardsData.filter((card) =>
+    card.name.toLowerCase().includes(filterValue.toLowerCase())
+  );
+
   return (
     <CardListContainer>
       {cardsData.map((card, index) => (
