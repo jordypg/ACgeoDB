@@ -15,7 +15,7 @@ const CardListContainer = styled.div`
 const cardsData = [
   { name: 'Student 1', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser },
   { name: 'Student 2', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
-  { name: 'Student 3', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 3', program: 'Program', major: 'Chem', country:'Country', imageUrl:unkownUser},
   { name: 'Student 4', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
   { name: 'Student 5', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
   { name: 'Student 6', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
@@ -28,14 +28,15 @@ const cardsData = [
 
 const CardList: React.FC = () => {
   const { filterValue } = useFilterContext();
-
   const filteredCards = cardsData.filter((card) =>
-    card.name.toLowerCase().includes(filterValue.toLowerCase())
+    card.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.program.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.major.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.country.toLowerCase().includes(filterValue.toLowerCase())
   );
-
   return (
     <CardListContainer>
-      {cardsData.map((card, index) => (
+      {filteredCards.map((card, index) => (
         <Card key={index} name={card.name} program={card.program} major={card.major} country={card.country} imageUrl={card.imageUrl}/>
       ))}
     </CardListContainer>
