@@ -6,10 +6,12 @@ import unkownUser from '/home/hwarrich23/ACgeoDB/geo_react/src/Images/unkown_use
 
 
 const CardListContainer = styled.div`
-  flex: 3;
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
+flex: 3;
+padding: 20px;
+display: flex;
+flex-wrap: wrap;
+max-height: 800px; /* Set the maximum height as needed */
+overflow-y: auto; /* Add vertical scrollbar if content overflows */
 `;
 
 const cardsData = [
@@ -22,6 +24,15 @@ const cardsData = [
   { name: 'Student 7', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
   { name: 'Student 8', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
   { name: 'Student 9', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 10', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 11', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 12', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 13', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 14', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 15', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 16', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 17', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
+  { name: 'Student 18', program: 'Program', major: 'Major', country:'Country', imageUrl:unkownUser},
   // Add more card data as needed
 ];
 

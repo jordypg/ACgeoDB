@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface CardProps {
@@ -10,7 +10,7 @@ interface CardProps {
   imageUrl: string;
 }
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ isExpanded: boolean }>`
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
@@ -18,9 +18,12 @@ const CardContainer = styled.div`
   width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
-
+  width: ${(props) => (props.isExpanded ? '50%' : '300px')};
+  height: ${(props) => (props.isExpanded ? '50vh' : 'auto')};
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
   &:hover {
-    transform: scale(1.05);
+    transform: ${(props) => (props.isExpanded ? 'none' : 'scale(1.05)')};
   }
   display: flex;
 `;
@@ -29,7 +32,7 @@ const CardContentContainer = styled.div`
   flex: 1;
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{ isExpanded: boolean }>`
   width: 180px; /* Adjust the width of the image container */
   height: 150px; /* Adjust the height of the image container */
   margin-left: 10 px; /* Adjust the margin as needed */
@@ -57,15 +60,20 @@ const CardContent = styled.p`
 `;
 
 const Card: React.FC<CardProps> = ({name, program, major, country, imageUrl }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleCardClick = () => {
+    setIsExpanded(!isExpanded);
+  };
     return (
-      <CardContainer>
+      <CardContainer isExpanded={isExpanded} onClick={handleCardClick}>
         <CardContentContainer>
           <CardTitle>{name}</CardTitle>
           <CardContent>{program}</CardContent>
           <CardContent>{major}</CardContent>
           <CardContent>{country}</CardContent>
         </CardContentContainer>
-        <ImageContainer>
+        <ImageContainer isExpanded={isExpanded}>
           <CardImage src={imageUrl} alt={`${name}'s image`} />
         </ImageContainer>
       </CardContainer>
