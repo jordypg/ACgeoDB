@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
-import Modal from './Modal';
 import { useFilterContext } from './FilterContext';
-import unkownUser from '/home/hwarrich23/ACgeoDB/geo_react/src/Images/unkown_user.jpg';
+import unkownUser from '/home/jyoon23/ACgeoDB/geo_react/src/Images/unkown_user.jpg';
 
 interface OriginalData {
   country: string;
   majors: string[];
-  pgr_id: string;
+  pgr_id: number;
   program: string;
   random_name: string;
   student_email: string;
@@ -21,16 +20,7 @@ interface TransformedData {
   major: string;
   country: string;
   imageUrl: string;
-  onCardClick: () => void;
-}
-interface CardProps {
-  key: number;
-  name: string;
-  program: string;
-  major: string;
-  country: string;
-  imageUrl: string;
-  onCardClick: () => void;
+  pgr_id: number;
 }
 
 const CardListContainer = styled.div`
@@ -63,12 +53,12 @@ useEffect(() => {
         const joinedMajors = item.majors.filter(major => major !== '').join(', ');
         return {
           key:1,
+          pgr_id: item.pgr_id,
           name: item.random_name,
           program: item.program,
           major: joinedMajors,
           country: item.country,
           imageUrl: unkownUser,
-          onCardClick: () => null// Replace with actual image URL if available
         };
       });
 
@@ -80,6 +70,31 @@ useEffect(() => {
   fetchData();
 }, []);
 
+const fetchCardDetails = async (pgrId: number) => {
+  const detailsUrl = `http://localhost:5000/get_backside?pgr_id=${pgrId}}`; // Replace with the actual URL
+  try {
+    const response = await fetch(detailsUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const cardDetails = await response.json();
+    // Process and use cardDetails as needed
+  } catch (error: any) {
+    console.error('Error fetching card details:', error.message);
+  }
+};
+
+const onCardClick = async (pgrId: number) => {
+  try {
+    const cardDetails = await fetchCardDetails(pgrId);
+    // Use cardDetails here as needed, e.g., updating state, showing in modal, etc.
+  } catch (error) {
+    // Handle any errors that occurred during fetchCardDetails
+  }
+};
+
+
+
   const { filterValue } = useFilterContext();
   const filteredCards = cardsData.filter((card) =>
     card.name.toLowerCase().includes(filterValue.toLowerCase()) ||
@@ -88,27 +103,13 @@ useEffect(() => {
     card.country.toLowerCase().includes(filterValue.toLowerCase())
   );
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<CardProps | null>(null);
-  const openModal = (card: CardProps) => {
-    setSelectedCard(card);
-    setIsModalOpen(true);
-  };
 
-  const closeModal = () => {
-    setSelectedCard(null);
-    setIsModalOpen(false);
-  };
   return (
     <CardListContainer>
       {filteredCards.map((card, index) => (
-        <Card key={index} name={card.name} program={card.program} major={card.major} country={card.country} imageUrl={card.imageUrl} onCardClick={() => openModal(card)}/>
+        <Card key={index} name={card.name} program={card.program} major={card.major} country={card.country} imageUrl={card.imageUrl} onCardClick={() => onCardClick(card.pgr_id)}
+        />
       ))}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        content={selectedCard ? `Modal Content for ${selectedCard.name}` : null}
-      />
     </CardListContainer>
   );
 };

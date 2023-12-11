@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 interface CardProps {
@@ -15,13 +16,10 @@ const CardContainer = styled.div`
   border-radius: 8px;
   padding: 20px;
   margin: 10px;
-  width: 300px;
+  width: 300px; /* Fixed width */
+  height: auto; /* Auto height */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
-  width: '300px';
-  height: '200px'
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
   &:hover {
     transform: scale(1.05);
   }
@@ -33,18 +31,18 @@ const CardContentContainer = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  width: 180px; /* Adjust the width of the image container */
-  height: 150px; /* Adjust the height of the image container */
-  margin-left: 10 px; /* Adjust the margin as needed */
-  overflow: hidden;
+  width: 180px;
+  height: 150px;
+  margin-left: 10px;
   margin-top: 13px;
-  border-radius: 8px; /* Optional: Add border-radius for a rounded image container */
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const CardImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensure the image covers the container */
+  object-fit: cover;
 `;
 
 const CardTitle = styled.h3`
@@ -56,23 +54,23 @@ const CardTitle = styled.h3`
 const CardContent = styled.p`
   color: #666;
   font-size: 14px;
-  margin-bottom: 20px; /* Adjust the margin as needed */
+  margin-bottom: 20px;
 `;
 
-const Card: React.FC<CardProps> = ({name, program, major, country, imageUrl,  onCardClick }) => {
-    return (
-      <CardContainer onClick={onCardClick}>
-        <CardContentContainer>
-          <CardTitle>{name}</CardTitle>
-          <CardContent>{program}</CardContent>
-          <CardContent>{major}</CardContent>
-          <CardContent>{country}</CardContent>
-        </CardContentContainer>
-        <ImageContainer>
-          <CardImage src={imageUrl} alt={`${name}'s image`} />
-        </ImageContainer>
-      </CardContainer>
-    );
-  };
+const Card: React.FC<CardProps> = ({ name, program, major, country, imageUrl }) => {
+  return (
+    <CardContainer>
+      <CardContentContainer>
+        <CardTitle>{name}</CardTitle>
+        <CardContent>{program}</CardContent>
+        <CardContent>{major}</CardContent>
+        <CardContent>{country}</CardContent>
+      </CardContentContainer>
+      <ImageContainer>
+        <CardImage src={imageUrl} alt={`${name}'s image`} />
+      </ImageContainer>
+    </CardContainer>
+  );
+};
 
 export default Card;
