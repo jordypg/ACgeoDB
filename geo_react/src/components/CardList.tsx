@@ -38,6 +38,26 @@ const cardsData = [
 
 
 const CardList: React.FC = () => {
+  // Assuming your Flask server is running on http://localhost:5000
+const apiUrl = 'http://localhost:5000/get_all_cards';
+
+// Function to fetch data from the Flask API
+const fetchData = async () => {
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Data from Flask API:', data);
+  } catch (error: any) {
+    console.error('Error fetching data:', error.message);
+  }
+};
+
+fetchData()
+
   const { filterValue } = useFilterContext();
   const filteredCards = cardsData.filter((card) =>
     card.name.toLowerCase().includes(filterValue.toLowerCase()) ||
