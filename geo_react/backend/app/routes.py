@@ -2,6 +2,7 @@
 from sqlalchemy import text
 from flask import render_template, jsonify
 from app import app, db
+from .randomnames import generate_random_name
 
 #/get_backside?pgr_id={PROGRAM ID}
 @app.route('/get_backside', methods=['GET'])
@@ -84,7 +85,8 @@ def get_all_cards():
             'country': row.country,
             'major_1': row.major_1,
             'major_2': row.major_2,
-            'major_3': row.major_3
+            'major_3': row.major_3,
+            'random_name': generate_random_name()  # Add a random name field
         }
         for row in result
     ]
