@@ -57,9 +57,9 @@ const CardContent = styled.p`
   margin-bottom: 20px;
 `;
 
-const Card: React.FC<CardProps> = ({ name, program, major, country, imageUrl }) => {
+const Card: React.FC<CardProps> = ({ name, program, major, country, imageUrl, onCardClick }) => {
   return (
-    <CardContainer>
+    <CardContainer onClick={onCardClick}> 
       <CardContentContainer>
         <CardTitle>{name}</CardTitle>
         <CardContent>{program}</CardContent>
