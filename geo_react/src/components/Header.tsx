@@ -6,7 +6,7 @@ import amherstLogo from '..Images/amherst-logo.png';
 const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: purple;
+  background-color: #63269f;
   color: white;
   padding: 20px;
   font-size: 24px;
