@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
 import { useFilterContext } from './FilterContext';
-import unkownUser from '/home/jyoon23/ACgeoDB/geo_react/src/Images/unkown_user.jpg';
+import unkownUser from '/home/hwarrich23/ACgeoDB/geo_react/src/Images/unkown_user.jpg';
 import Modal from './Modal'
 
 interface OriginalData {
@@ -75,7 +75,7 @@ const CardList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   // Assuming your Flask server is running on http://localhost:5000
-const apiUrl = 'http://localhost:5000/get_all_cards';
+const apiUrl = 'http://10.2.10.45/:5000/get_all_cards';
 
 // Function to fetch data from the Flask API
 
