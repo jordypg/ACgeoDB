@@ -22,6 +22,22 @@ interface TransformedData {
   country: string;
   imageUrl: string;
   pgr_id: number;
+  academic_exc_comments: string;
+  academic_exc_rating: string;
+  amount_spent: string;
+  attitudes_diff: string;
+  attitudes_diff_comments: string;
+  challenges: string;
+  city_affordability: string;  
+  courses_taken: string;
+  growth: string;
+  housing_acc: string;
+  housing_acc_comments: string;
+  leisure_exc_comments: string; 
+  leisure_exc_rating: string;
+  new_perspectives: string; 
+  primary_reason: string;
+  term_id: string
 }
 
 export interface CardBacksideDetails {
@@ -72,21 +88,41 @@ useEffect(() => {
       }
 
       const data: OriginalData[] = await response.json();
+      const detailedCardsData: TransformedData[] = [];
 
-      const transformedData: TransformedData[] = data.map(item => {
+      for (const item of data) {
         const joinedMajors = item.majors.filter(major => major !== '').join(', ');
-        return {
-          key: 1,
-          pgr_id: item.pgr_id,
+        const cardBacksideDetails = await fetchCardDetails(item.pgr_id) || {}; // Fetch additional details or use empty object
+  
+        const transformedData = {
+          pgr_id: item.pgr_id, // Use pgr_id as key
           name: item.random_name,
           program: item.program,
           major: joinedMajors,
           country: item.country,
           imageUrl: unkownUser,
+          // Spread the additional details into the object
+          ...cardBacksideDetails,
         };
-      });
+  
+        detailedCardsData.push(transformedData);
+      }
 
-      setCardsData(transformedData);
+      // const transformedData: TransformedData[] = data.map(item => {
+      //   const joinedMajors = item.majors.filter(major => major !== '').join(', ');
+      //   return {
+      //     key: 1,
+      //     pgr_id: item.pgr_id,
+      //     name: item.random_name,
+      //     program: item.program,
+      //     major: joinedMajors,
+      //     country: item.country,
+      //     imageUrl: unkownUser,
+      //   };
+      // });
+
+      // setCardsData(transformedData);
+      setCardsData(detailedCardsData);
     } catch (error: any) {
       console.error('Error fetching data:', error.message);
     }
@@ -141,10 +177,24 @@ const handleCloseModal = () => {
     card.name.toLowerCase().includes(filterValue.toLowerCase()) ||
     card.program.toLowerCase().includes(filterValue.toLowerCase()) ||
     card.major.toLowerCase().includes(filterValue.toLowerCase()) ||
-    card.country.toLowerCase().includes(filterValue.toLowerCase())
+    card.country.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.academic_exc_comments.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.academic_exc_rating.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.amount_spent.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.attitudes_diff.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.attitudes_diff_comments.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.challenges.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.city_affordability.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.courses_taken.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.growth.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.housing_acc.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.housing_acc_comments.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.leisure_exc_comments.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.leisure_exc_rating.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.new_perspectives.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.primary_reason.toLowerCase().includes(filterValue.toLowerCase()) ||
+    card.term_id.toLowerCase().includes(filterValue.toLowerCase()) 
   );
-
-
   return (
     <CardListContainer>
       {filteredCards.map((card, index) => (

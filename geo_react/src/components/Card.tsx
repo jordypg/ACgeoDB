@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 interface CardProps {
   key: number;
+  // pgr_id: number;
   name: string;
   program: string;
   major: string;
