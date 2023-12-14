@@ -78,22 +78,22 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, cardBacksideDetails }) => 
         <CloseButton onClick={onClose}>&times;</CloseButton>
         {cardBacksideDetails ? (
           <div>
-            <p>Academic Comments: {cardBacksideDetails.academic_exc_comments}</p>
-            <p>Rating: {cardBacksideDetails.academic_exc_rating}</p>
-            <p>Amount Spent: {cardBacksideDetails.amount_spent}</p>
-            <p>Attitudes Different: {cardBacksideDetails.attitudes_diff}</p>
-            <p>Attitudes Different Comments: {cardBacksideDetails.attitudes_diff_comments}</p>
-            <p>Chalenges: {cardBacksideDetails.challenges}</p>
-            <p>City Affordability: {cardBacksideDetails.city_affordability}</p>
-            <p>Courses Taken: {cardBacksideDetails.courses_taken}</p>
-            <p>Growth: {cardBacksideDetails.growth}</p>
-            <p>Housing Accomodations: {cardBacksideDetails.housing_acc}</p>
-            <p>Housing Accomodations Comments: {cardBacksideDetails.housing_acc_comments}</p>
-            <p>Leisure Excursion Rating: {cardBacksideDetails.leisure_exc_rating}</p>
-            <p>Leisure Excursion Comments: {cardBacksideDetails.leisure_exc_comments}</p>
-            <p>New Perspectives: {cardBacksideDetails.new_perspectives}</p>
-            <p>Primary Reason: {cardBacksideDetails.primary_reason}</p>
-            <p>Term ID: {cardBacksideDetails.term_id}</p>
+            <p><strong>Academic Comments:</strong> {cardBacksideDetails.academic_exc_comments}</p>
+            <p><strong>Rating:</strong> {cardBacksideDetails.academic_exc_rating}</p>
+            <p><strong>Amount Spent:</strong> {cardBacksideDetails.amount_spent}</p>
+            <p><strong>Attitudes Different:</strong> {cardBacksideDetails.attitudes_diff}</p>
+            <p><strong>Attitudes Different Comments:</strong> {cardBacksideDetails.attitudes_diff_comments}</p>
+            <p><strong>Challenges:</strong> {cardBacksideDetails.challenges}</p>
+            <p><strong>City Affordability:</strong> {cardBacksideDetails.city_affordability}</p>
+            <p><strong>Courses Taken:</strong> {cardBacksideDetails.courses_taken}</p>
+            <p><strong>Growth:</strong> {cardBacksideDetails.growth}</p>
+            <p><strong>Housing Accomodations:</strong> {cardBacksideDetails.housing_acc}</p>
+            <p><strong>Housing Accomodations Comments:</strong> {cardBacksideDetails.housing_acc_comments}</p>
+            <p><strong>Leisure Excursion Rating:</strong> {cardBacksideDetails.leisure_exc_rating}</p>
+            <p><strong>Leisure Excursion Comments:</strong> {cardBacksideDetails.leisure_exc_comments}</p>
+            <p><strong>New Perspectives:</strong> {cardBacksideDetails.new_perspectives}</p>
+            <p><strong>Primary Reason:</strong> {cardBacksideDetails.primary_reason}</p>
+            <p><strong>Term ID:</strong> {cardBacksideDetails.term_id}</p>
             {/* Render other fields similarly */}
           </div>
         ) : (
