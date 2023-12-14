@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import amherstLogo from './amherst-logo.png';
+import amherstLogo from '..Images/amherst-logo.png';
 
 
 const HeaderContainer = styled.div`
