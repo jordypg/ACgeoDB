@@ -90,3 +90,62 @@ def get_all_cards():
     ]
 
     return jsonify(rows)
+
+@app.route('/get_all_programs', methods=['GET'])
+def get_all_programs():
+    query = '''
+    SELECT 
+        h.program_name,
+        h.location_name,
+        pr.term_id, pr.recommendation_rating, pr.recommendation_comments,
+        f.amount_spent, f.city_affordability, f.housing_acc, f.housing_acc_comments,
+        s.attitudes_diff, s.attitudes_diff_comments, s.res_staff, s.res_staff_comments, s.leisure_exc_avail, s.leisure_exc_rating, s.leisure_exc_comments,
+        aa.academic_exc_avail, aa.academic_exc_rating, aa.academic_exc_comments, aa.influencing_factors, aa.orientation_description
+    FROM 
+        program_reflection pr
+    LEFT JOIN 
+        hosted_in h ON pr.program_name = h.program_name
+    LEFT JOIN 
+        is_about_financial_factors f ON pr.pgr_id = f.pgr_id
+    LEFT JOIN 
+        is_about_social_factors s ON pr.pgr_id = s.pgr_id
+    LEFT JOIN 
+        is_about_academic_factors aa ON pr.pgr_id = aa.pgr_id;
+    '''
+    result = db.session.execute(text(query))
+    
+    # Creating a dictionary of dictionaries
+    programs = {}
+    for row in result:
+        program_name = row.program_name
+        if program_name not in programs:
+            programs[program_name] = []
+
+        programs[program_name].append({
+            'program_name': row.program_name,
+            'location_name': row.location_name,
+            'term_id': row.term_id,
+            'recommendation_rating': row.recommendation_rating,
+            'recommendation_comments': row.recommendation_comments,
+            'amount_spent': row.amount_spent,
+            'city_affordability': row.city_affordability,
+            'housing_acc': row.housing_acc,
+            'housing_acc_comments': row.housing_acc_comments,
+            'attitudes_diff': row.attitudes_diff,
+            'attitudes_diff_comments': row.attitudes_diff_comments,
+            'res_staff': row.res_staff,
+            'res_staff_comments': row.res_staff_comments,
+            'leisure_exc_avail': row.leisure_exc_avail,
+            'leisure_exc_rating': row.leisure_exc_rating,
+            'leisure_exc_comments': row.leisure_exc_comments,
+            'academic_exc_avail': row.academic_exc_avail,
+            'academic_exc_rating': row.academic_exc_rating,
+            'academic_exc_comments': row.academic_exc_comments,
+            'influencing_factors': row.influencing_factors,
+            'orientation_description': row.orientation_description
+        })
+
+    # Convert the dictionary to a JSON-compatible format
+    return jsonify(programs)
+
+
