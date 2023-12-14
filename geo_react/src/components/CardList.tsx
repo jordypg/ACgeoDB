@@ -75,7 +75,7 @@ const CardList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   // Assuming your Flask server is running on http://localhost:5000
-const apiUrl = 'http://10.2.10.45/:5000/get_all_cards';
+const apiUrl = 'http://10.2.10.45:5000/get_all_cards';
 
 // Function to fetch data from the Flask API
 
@@ -131,7 +131,7 @@ useEffect(() => {
 }, []);
 
 const fetchCardDetails = async (pgrId: number) => {
-  const detailsUrl = `http://127.0.0.1:5000//get_backside?pgr_id=${pgrId}`; // Replace with the actual URL
+  const detailsUrl = `http://10.2.10.45:5000/get_backside?pgr_id=${pgrId}`; // Replace with the actual URL
   try {
     const response = await fetch(detailsUrl);
     if (!response.ok) {
